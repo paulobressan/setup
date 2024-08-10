@@ -42,14 +42,12 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 return {
   {
     "williamboman/mason.nvim",
-    lazy = false,
     config = function()
       require("mason").setup()
     end
   },
   {
     "williamboman/mason-lspconfig.nvim",
-    lazy = false,
     requires = {
       "neovim/nvim-lspconfig",
       "williamboman/mason.nvim",
@@ -62,7 +60,6 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    lazy = false,
     config = function()
       if vim.lsp.inlay_hint then
         vim.lsp.inlay_hint.enable(true, { 0 })
@@ -76,6 +73,12 @@ return {
           capabilities = capabilities,
         }
       end
+    end
+  },
+  {
+    "j-hui/fidget.nvim",
+    config = function()
+      require("fidget").setup()
     end
   }
 }
