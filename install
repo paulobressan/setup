@@ -1,3 +1,20 @@
-ln -s $PWD/nvim $HOME/.config/nvim
-ln -s $PWD/alacritty $HOME/.config/alacritty
-ln -s $PWD/zellij $HOME/.config/zellij
+#!/bin/bash
+
+create_symlink() {
+    local src=$1
+    local dest=$2
+
+    if [ -L "$dest" ]; then
+        echo "Symlink already exists: $dest"
+    elif [ -e "$dest" ]; then
+        echo "A file or directory already exists at: $dest"
+    else
+        ln -s "$src" "$dest"
+        echo "Created symlink: $dest -> $src"
+    fi
+}
+
+create_symlink "$PWD/nvim" "$HOME/.config/nvim"
+create_symlink "$PWD/alacritty" "$HOME/.config/alacritty"
+create_symlink "$PWD/zellij" "$HOME/.config/zellij"
+create_symlink "$PWD/.zshrc" "$HOME/.zshrc"
