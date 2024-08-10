@@ -6,16 +6,25 @@ My current development environment configuration.
 # Install
 Make sure that you already have installed the tools below on your computer.
 
+## Common tools
 - [zsh](https://ohmyz.sh/#install)
 - [nvim](https://github.com/neovim/neovim/blob/master/INSTALL.md) 
 - [alacritty](https://github.com/alacritty/alacritty/blob/master/INSTALL.md)
 - [zellij](https://zellij.dev/documentation/installation)
+- [ripgrep](https://github.com/BurntSushi/ripgrep)
+- [fd](https://github.com/sharkdp/fd)
 
-Execute the install script to create the symbolic links.
+Execute the configure script to create the symbolic links.
 
 ```sh
 ./configure
 ```
+
+## Kubernetes tools
+
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux)
+- [kubectx](https://github.com/ahmetb/kubectx)
+- [k9s](https://k9scli.io)
 
 # How to start 
 
