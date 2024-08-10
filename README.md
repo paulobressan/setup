@@ -3,7 +3,6 @@ My current development environment configuration.
 
 ![Screencast from 2024-08-10 16-37-32](https://github.com/user-attachments/assets/1ecb6a2c-2c16-41dd-8743-78f084180fc2)
 
-
 -  [Fedora Linux](https://fedoraproject.org)
 
 # Install
@@ -24,15 +23,16 @@ Execute the configure script to create the symbolic links.
 ```
 
 ## Kubernetes tools
+Some tools to help access and handle k8s environment.
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux)
 - [kubectx](https://github.com/ahmetb/kubectx)
 - [k9s](https://k9scli.io)
 
 # How to start 
+Basic commands to start using the tools.
 
 ## nvim
-
 The Lazy is being used to manage plugins and it will be installed automaticly. 
 
 Install nvim plugins 
