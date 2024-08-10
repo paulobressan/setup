@@ -1,0 +1,6 @@
+[window]
+startup_mode = "Maximized"
+decorations = "None"
+opacity = 0.8
+dynamic_padding = true 
+
