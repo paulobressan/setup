@@ -1,6 +1,9 @@
 # Setup
 My current development environment configuration.
 
+![Screencast from 2024-08-10 16-37-32](https://github.com/user-attachments/assets/1ecb6a2c-2c16-41dd-8743-78f084180fc2)
+
+
 -  [Fedora Linux](https://fedoraproject.org)
 
 # Install
