@@ -1,0 +1,3 @@
+ln -s $PWD/nvim $HOME/.config/nvim
+ln -s $PWD/alacritty $HOME/.config/alacritty
+ln -s $PWD/zellij $HOME/.config/zellij
