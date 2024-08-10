@@ -14,5 +14,5 @@ Make sure that you already have installed the tools below on your computer.
 Execute the install script to create the symbolic links.
 
 ```sh
-./install
+./configure
 ```
