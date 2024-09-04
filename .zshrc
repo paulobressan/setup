@@ -115,3 +115,5 @@ export PATH="$HOME/go/bin:$PATH"
 
 # Local bin
 export PATH="$PATH:$HOME/.local/bin"
+
+. "$HOME/.aiken/bin/env"

@@ -1,10 +1,30 @@
 local servers = {
   "lua_ls",
   "rust_analyzer",
-  "tsserver",
   "jsonls",
-  "yamlls"
+  "yamlls",
+  "html",
+  "terraformls"
 }
+
+local manual_servers = {
+  "tsserver",
+  "volar",
+}
+
+local formatters = {
+  "prettier"
+}
+
+local function combine(...)
+  local result = {}
+  for _, t in ipairs({ ... }) do
+    for _, v in ipairs(t) do
+      table.insert(result, v)
+    end
+  end
+  return result
+end
 
 local map = vim.keymap.set
 
@@ -47,6 +67,14 @@ return {
     end
   },
   {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    config = function()
+      require("mason-tool-installer").setup({
+        ensure_installed = combine(servers, manual_servers, formatters)
+      })
+    end
+  },
+  {
     "williamboman/mason-lspconfig.nvim",
     requires = {
       "neovim/nvim-lspconfig",
@@ -54,7 +82,7 @@ return {
     },
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = servers
+        -- ensure_installed = combine(servers, manual_servers)
       })
     end
   },
@@ -73,6 +101,24 @@ return {
           capabilities = capabilities,
         }
       end
+
+      -- Manual servers
+      local mason_registry = require('mason-registry')
+      local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() ..
+          '/node_modules/@vue/language-server'
+      lspconfig.tsserver.setup {
+        init_options = {
+          plugins = {
+            {
+              name = '@vue/typescript-plugin',
+              location = vue_language_server_path,
+              languages = { 'vue' },
+            },
+          },
+        },
+        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+      }
+      lspconfig.volar.setup {}
     end
   },
   {

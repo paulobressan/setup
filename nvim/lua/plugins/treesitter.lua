@@ -9,7 +9,11 @@ return {
         "typescript",
         "javascript",
         "markdown",
-        "tsx"
+        "tsx",
+        "vue",
+        "html",
+        "css",
+        "terraform"
       },
 
       highlight = {
