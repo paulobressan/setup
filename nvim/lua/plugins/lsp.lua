@@ -8,7 +8,7 @@ local servers = {
 }
 
 local manual_servers = {
-  "tsserver",
+  "ts_ls",
   "volar",
 }
 

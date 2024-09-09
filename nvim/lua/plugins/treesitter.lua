@@ -13,7 +13,8 @@ return {
         "vue",
         "html",
         "css",
-        "terraform"
+        "terraform",
+        "go"
       },
 
       highlight = {
