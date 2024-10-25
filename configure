@@ -18,3 +18,8 @@ create_symlink "$PWD/nvim" "$HOME/.config/nvim"
 create_symlink "$PWD/alacritty" "$HOME/.config/alacritty"
 create_symlink "$PWD/zellij" "$HOME/.config/zellij"
 create_symlink "$PWD/.zshrc" "$HOME/.zshrc"
+
+for file in "$PWD/fonts"/*; do
+  filename=$(basename "$file")
+  create_symlink $file "$HOME/.local/share/fonts/$filename"
+done

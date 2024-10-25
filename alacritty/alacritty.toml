@@ -4,3 +4,10 @@ decorations = "None"
 opacity = 0.8
 dynamic_padding = true 
 
+[font]
+normal.family = "Cousine Nerd Font"
+bold.family = "Cousine Nerd Font"
+italic.family = "Cousine Nerd Font"
+bold_italic.family = "Cousine Nerd Font"
+
+size = 11
