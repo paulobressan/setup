@@ -107,6 +107,9 @@ return {
       local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() ..
           '/node_modules/@vue/language-server'
       lspconfig.ts_ls.setup {
+        on_attach = on_attach,
+        on_init = on_init,
+        capabilities = capabilities,
         init_options = {
           plugins = {
             {
