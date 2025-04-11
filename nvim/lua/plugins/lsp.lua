@@ -1,6 +1,5 @@
 local servers = {
   "lua_ls",
-  "rust_analyzer",
   "jsonls",
   "yamlls",
   "html",
@@ -10,6 +9,7 @@ local servers = {
 local manual_servers = {
   "ts_ls",
   "volar",
+  "rust_analyzer",
 }
 
 local formatters = {
@@ -121,7 +121,33 @@ return {
         },
         filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
       }
+
+      -- Volar Vue
       lspconfig.volar.setup {}
+
+      -- Rust Analyzer
+      local env = os.getenv("LSP_RUST_FEATURES") or ""
+      local features = {}
+      for val in (env .. ","):gmatch("([^,]+),") do
+        table.insert(features, val:match("^%s*(.-)%s*$")) -- trim whitespace
+      end
+      lspconfig.rust_analyzer.setup {
+        on_attach = on_attach,
+        on_init = on_init,
+        capabilities = capabilities,
+        settings = {
+          ["rust-analyzer"] = {
+            cargo = {
+              -- allFeatures = true,
+              features = features
+            },
+            check = {
+              -- allFeatures = true,
+              features = features
+            }
+          }
+        }
+      }
     end
   },
   {

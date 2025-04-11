@@ -14,5 +14,13 @@ return {
     config = function()
       vim.cmd.colorscheme "gruvbox"
     end
+  },
+  {
+    "sainnhe/gruvbox-material",
+    priority = 1000,
+    enabled = false,
+    config = function()
+      vim.cmd.colorscheme "gruvbox-material"
+    end
   }
 }
