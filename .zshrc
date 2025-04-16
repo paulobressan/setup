@@ -119,3 +119,10 @@ export PATH="$PATH:$HOME/.local/bin"
 . "$HOME/.aiken/bin/env"
 
 . "$HOME/.cargo/env"
+
+# bun completions
+[ -s "/home/paulobressan/.bun/_bun" ] && source "/home/paulobressan/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
