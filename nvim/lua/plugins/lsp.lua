@@ -1,154 +1,112 @@
-local servers = {
-  "lua_ls",
-  "jsonls",
-  "yamlls",
-  "html",
-  "terraformls",
-  "gopls"
-}
-
-local manual_servers = {
-  "ts_ls",
-  "volar",
-  "rust_analyzer",
-}
-
-local formatters = {
-  "prettier"
-}
-
-local function combine(...)
-  local result = {}
-  for _, t in ipairs({ ... }) do
-    for _, v in ipairs(t) do
-      table.insert(result, v)
-    end
-  end
-  return result
-end
-
-local map = vim.keymap.set
-
-local on_attach = function(_, bufnr)
-  local opts = { buffer = bufnr, noremap = true, silent = true }
-  map("n", "gD", vim.lsp.buf.declaration, opts)
-  map("n", "gd", vim.lsp.buf.definition, opts)
-  map("n", "K", vim.lsp.buf.hover, opts)
-  map("n", "gi", vim.lsp.buf.implementation, opts)
-  map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-  map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
-  map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
-  map("n", "<leader>wl", function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, opts)
-  map("n", "<leader>D", vim.lsp.buf.type_definition, opts)
-  map("n", "<leader>rn", vim.lsp.buf.rename, opts)
-  map("n", "gr", vim.lsp.buf.references, opts)
-  map("n", "<leader>e", vim.diagnostic.open_float, opts)
-  map("n", "[d", vim.diagnostic.goto_prev, opts)
-  map("n", "]d", vim.diagnostic.goto_next, opts)
-  map("n", "<leader>q", vim.diagnostic.setloclist, opts)
-  map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-end
-
-local on_init = function(client, _)
-  if client.supports_method "textDocument/semanticTokens" then
-    client.server_capabilities.semanticTokensProvider = nil
-  end
-end
-
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local servers        = { "lua_ls", "jsonls", "yamlls", "html", "terraformls", "gopls" }
+local manual_servers = { "ts_ls", "rust_analyzer", "volar" }
+local formatters     = { "prettier" }
+local combine        = vim.tbl_flatten
 
 return {
   {
     "williamboman/mason.nvim",
+    build = ":MasonUpdate",
     config = function()
+      local ensure = combine({ servers, manual_servers, formatters })
+
       require("mason").setup()
-    end
-  },
-  {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-    config = function()
+
+      require("mason-lspconfig").setup()
+
       require("mason-tool-installer").setup({
-        ensure_installed = combine(servers, manual_servers, formatters)
+        ensure_installed = ensure,
+        auto_update = false,
+        run_on_start = true,
       })
-    end
-  },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    requires = {
-      "neovim/nvim-lspconfig",
-      "williamboman/mason.nvim",
-    },
-    config = function()
-      require("mason-lspconfig").setup({
-        -- ensure_installed = combine(servers, manual_servers)
-      })
-    end
+    end,
+    dependencies = {
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
+      "williamboman/mason-lspconfig.nvim",
+    }
   },
   {
     "neovim/nvim-lspconfig",
     config = function()
-      if vim.lsp.inlay_hint then
-        vim.lsp.inlay_hint.enable(true, { 0 })
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      local on_attach    = function(_, bufnr)
+        local map = function(mode, lhs, rhs)
+          vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true })
+        end
+
+        map("n", "gD", vim.lsp.buf.declaration)
+        map("n", "gd", vim.lsp.buf.definition)
+        map("n", "K", vim.lsp.buf.hover)
+        map("n", "gi", vim.lsp.buf.implementation)
+        map("n", "<C-k>", vim.lsp.buf.signature_help)
+        map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action)
+        map("n", "<leader>rn", vim.lsp.buf.rename)
+        map("n", "gr", vim.lsp.buf.references)
+        map("n", "[d", vim.diagnostic.goto_prev)
+        map("n", "]d", vim.diagnostic.goto_next)
+        map("n", "<leader>e", vim.diagnostic.open_float)
+
+        if vim.lsp.inlay_hint then
+          vim.lsp.inlay_hint.enable()
+        end
       end
 
-      local lspconfig = require("lspconfig")
-      for _, lsp in ipairs(servers) do
-        lspconfig[lsp].setup {
-          on_attach = on_attach,
-          on_init = on_init,
+      local on_init      = function(client, _)
+        if client.supports_method("textDocument/semanticTokens") then
+          client.server_capabilities.semanticTokensProvider = nil
+        end
+      end
+
+      -- Auto servers
+      for _, name in ipairs(servers) do
+        vim.lsp.config(name, {
+          on_attach    = on_attach,
+          on_init      = on_init,
           capabilities = capabilities,
-        }
+        })
       end
+      vim.lsp.enable(servers)
 
-      -- Manual servers
-      local vue_language_server_path = vim.fn.expand(
-        "$MASON/packages/vue-language-server/node_modules/@vue/language-server")
-      lspconfig.ts_ls.setup {
-        on_attach = on_attach,
-        on_init = on_init,
+      -- TypeScript + Vue
+      local vue_ls_path = vim.fn.expand("$MASON/packages/vue-language-server" ..
+        "/node_modules/@vue/language-server")
+      vim.lsp.config("ts_ls", {
+        on_attach    = on_attach,
+        on_init      = on_init,
         capabilities = capabilities,
         init_options = {
           plugins = {
             {
-              name = '@vue/typescript-plugin',
-              location = vue_language_server_path,
-              languages = { 'vue' },
+              name      = "@vue/typescript-plugin",
+              location  = vue_ls_path,
+              languages = { "vue" },
             },
           },
         },
-        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-      }
-
-      -- Volar Vue
-      lspconfig.volar.setup {}
+        filetypes    = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+      })
+      vim.lsp.enable("ts_ls")
+      vim.lsp.enable("volar")
 
       -- Rust Analyzer
-      local env = os.getenv("LSP_RUST_FEATURES") or ""
       local features = {}
-      for val in (env .. ","):gmatch("([^,]+),") do
-        table.insert(features, val:match("^%s*(.-)%s*$")) -- trim whitespace
+      for feat in (os.getenv("LSP_RUST_FEATURES") or ""):gmatch("([^,]+),") do
+        table.insert(features, vim.trim(feat))
       end
-      lspconfig.rust_analyzer.setup {
-        on_attach = on_attach,
-        on_init = on_init,
+      vim.lsp.config("rust_analyzer", {
+        on_attach    = on_attach,
+        on_init      = on_init,
         capabilities = capabilities,
-        settings = {
+        settings     = {
           ["rust-analyzer"] = {
-            cargo = {
-              -- allFeatures = true,
-              features = features
-            },
-            check = {
-              -- allFeatures = true,
-              features = features
-            }
-          }
-        }
-      }
-    end
+            cargo = { features = features },
+            check = { features = features },
+          },
+        },
+      })
+      vim.lsp.enable("rust_analyzer")
+    end,
   },
   {
     "j-hui/fidget.nvim",
