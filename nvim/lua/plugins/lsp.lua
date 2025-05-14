@@ -91,7 +91,7 @@ return {
 
       -- Rust Analyzer
       local features = {}
-      for feat in (os.getenv("LSP_RUST_FEATURES") or ""):gmatch("([^,]+),") do
+      for feat in (os.getenv("LSP_RUST_FEATURES") or ""):gmatch("([^,]+)") do
         table.insert(features, vim.trim(feat))
       end
       vim.lsp.config("rust_analyzer", {
