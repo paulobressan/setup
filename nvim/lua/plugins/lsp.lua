@@ -1,5 +1,5 @@
 local servers        = { "lua_ls", "jsonls", "yamlls", "html", "terraformls", "gopls" }
-local manual_servers = { "ts_ls", "rust_analyzer" }
+local manual_servers = { "ts_ls", "vue_ls", "rust_analyzer" }
 local formatters     = { "prettier" }
 local combine        = vim.tbl_flatten
 
@@ -87,6 +87,7 @@ return {
         filetypes    = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
       })
       vim.lsp.enable("ts_ls")
+      vim.lsp.enable("vue_ls")
 
       -- Rust Analyzer
       local features = {}
