@@ -126,3 +126,6 @@ export PATH="$PATH:$HOME/.local/bin"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+export TX3_ROOT="/home/paulobressan/.tx3"
+export PATH="$TX3_ROOT/default/bin:$PATH"
