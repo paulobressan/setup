@@ -46,7 +46,7 @@ return {
         },
         float = {
           source = true,
-          border = "rounded",
+          -- border = "rounded",
         },
         signs = true,
         underline = true,
