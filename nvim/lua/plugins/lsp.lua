@@ -211,7 +211,7 @@ return {
         end,
       }
 
-      -- Enable manual servers 
+      -- Enable manual servers
       for server, config_fn in pairs(manual_configs) do
         if config_fn() then
           lsp.enable(server)
@@ -222,7 +222,13 @@ return {
   {
     "j-hui/fidget.nvim",
     config = function()
-      require("fidget").setup()
+      require("fidget").setup({
+        notification = {
+          window = {
+            winblend = 100,
+          },
+        },
+      })
     end,
   }
 }
