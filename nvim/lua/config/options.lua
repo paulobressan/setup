@@ -22,3 +22,9 @@ vim.opt.smartindent = true
 -- default relativenumber
 vim.opt.relativenumber = true
 
+-- folder
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = false  -- Start with folds open
+vim.opt.foldlevel = 99      -- Start with everything unfolded
+vim.opt.foldlevelstart = 99 -- Start with everything unfolded
