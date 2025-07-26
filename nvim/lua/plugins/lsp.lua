@@ -71,37 +71,22 @@ return {
       end
       lsp.enable(servers)
 
+      -- Typescript, Vue
+      local mason_path = vim.fn.stdpath("data") .. "/mason"
+      local vue_language_server_path = mason_path .. "/packages/vue-language-server/node_modules/@vue/language-server"
+
       lsp.config("vue_ls", {
-        on_attach    = on_attach,
-        on_init      = on_init,
+        on_attach = on_attach,
+        on_init = on_init,
         capabilities = capabilities,
-        handlers     = {
-          ["tsserver/request"] = function(_, result, context)
-            local clients = lsp.get_clients({ bufnr = context.bufnr, name = 'vtsls' })
-            if #clients == 0 then
-              vim.notify('Could not find `vtsls`, `vue_ls` requires it.', vim.log.levels.ERROR)
-              return
-            end
-
-            local ts_client = clients[1]
-            local param = result[1] -- Fix unpack
-            local id, command, payload = table.unpack(param)
-
-            ts_client:exec_cmd({
-              title = 'vue_request_forward',
-              command = 'typescript.tsserverRequest',
-              arguments = { command, payload },
-            }, { bufnr = context.bufnr }, function(_, r)
-              local response_data = { { id, r.body } }
-              context.client.notify('tsserver/response', response_data)
-            end)
-          end,
+        init_options = {
+          typescript = {
+            tsdk = mason_path .. "/packages/typescript-language-server/node_modules/typescript/lib"
+          }
         },
       })
       lsp.enable("vue_ls")
 
-      local vue_language_server_path = vim.fn.expand("$MASON/packages/vue-language-server" ..
-        "/node_modules/@vue/language-server")
       local vue_plugin = {
         name = '@vue/typescript-plugin',
         location = vue_language_server_path,
