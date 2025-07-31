@@ -121,11 +121,13 @@ export PATH="$PATH:$HOME/.local/bin"
 . "$HOME/.cargo/env"
 
 # bun completions
-[ -s "/home/paulobressan/.bun/_bun" ] && source "/home/paulobressan/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-export TX3_ROOT="/home/paulobressan/.tx3"
+export TX3_ROOT="$HOME/.tx3"
 export PATH="$TX3_ROOT/default/bin:$PATH"
+
+export PATH="$HOME/flutter/bin:$PATH"
