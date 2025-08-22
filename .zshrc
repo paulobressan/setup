@@ -131,3 +131,6 @@ export TX3_ROOT="$HOME/.tx3"
 export PATH="$TX3_ROOT/default/bin:$PATH"
 
 export PATH="$HOME/flutter/bin:$PATH"
+
+export TX3_ROOT="/home/paulobressan/.tx3"
+export PATH="$TX3_ROOT/default/bin:$PATH"
