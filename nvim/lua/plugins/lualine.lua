@@ -5,7 +5,7 @@ local hint_icon = '󰌶 '
 
 return {
   "nvim-lualine/lualine.nvim",
-  enabled = false,
+  enabled = true,
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     require("lualine").setup {
