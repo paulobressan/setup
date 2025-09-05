@@ -127,10 +127,8 @@ export PATH="$PATH:$HOME/.local/bin"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# tx3
 export TX3_ROOT="$HOME/.tx3"
 export PATH="$TX3_ROOT/default/bin:$PATH"
 
 export PATH="$HOME/flutter/bin:$PATH"
-
-export TX3_ROOT="/home/paulobressan/.tx3"
-export PATH="$TX3_ROOT/default/bin:$PATH"
